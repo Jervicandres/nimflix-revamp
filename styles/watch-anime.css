@@ -1,0 +1,31 @@
+
+.details-container{
+   @apply bg-zinc-900 p-5 mx-2 lg:mx-0 rounded-sm col-span-full lg:col-span-2;
+}
+.episodes-container{
+   @apply flex flex-col gap-2 bg-zinc-900 p-5 mx-2 lg:mx-0 rounded-sm col-span-full lg:col-span-1;
+}
+.episode-list{
+   @apply flex flex-col max-h-96 overflow-y-scroll gap-2;
+}
+.episode-card{
+   @apply flex items-start gap-2 p-1 cursor-pointer hover:bg-dark;
+}
+.episode-title{
+   @apply hover:text-yellow text-sm font-semibold;
+}
+
+.episode-list::-webkit-scrollbar {
+   /* Customize the scrollbar width */
+   @apply w-2
+ }
+
+ .episode-list::-webkit-scrollbar-track {
+   /* Customize the scrollbar track */
+   @apply hidden
+ }
+
+ .episode-list::-webkit-scrollbar-thumb {
+   /* Customize the scrollbar thumb */
+   @apply bg-white bg-opacity-50 rounded-full
+ }

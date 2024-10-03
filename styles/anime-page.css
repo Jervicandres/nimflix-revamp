@@ -1,0 +1,21 @@
+
+.anime-banner{
+  @apply flex h-[300px] w-full relative bg-cover bg-no-repeat;
+}
+.anime-banner::before{
+  content: '';
+  background: linear-gradient(180deg,rgba(0,0,0,11) 40%,rgba(0,0,0,1));
+  @apply w-full h-full opacity-30 absolute top-0 left-0;
+}
+.anime-poster{
+  @apply min-w-[150px] lg:w-[250px] h-[230px] lg:h-[325px] mt-[-150px] relative;
+}
+.tabs{
+  @apply border-b-2 hover:border-b-blue-500 hover:border-b-2 transition p-2 ease-in-out
+}
+.tabs.active{
+  @apply border-b-blue-500
+}
+.episode-grid{
+  @apply grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 w-full gap-4;
+}

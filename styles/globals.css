@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+  html{
+    @apply font-roboto bg-zinc-900 text-zinc-200;
+  }
+  .app-container{
+    @apply flex flex-col;
+  }
+  .section-width{
+    @apply w-full lg:w-[90%] max-w-[1440px] mx-auto my-5;
+  }
+  .navbar{
+    @apply flex justify-between lg:gap-2 items-center py-3 md:px-12 lg:px-24 border-b-[1px] border-zinc-500;
+  }
+  .nav-links{
+    @apply flex justify-evenly gap-2 text-sm hidden md:flex lg:flex;
+    font-weight: 500;
+  }
+  .nav-links>*{
+    @apply hover:text-yellow hover:duration-300 ;
+  }
+  .anime-results-grid{
+    @apply grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4;
+  }
+  .skeleton-header{
+    @apply text-xl animate-pulse min-w-full h-8 col-span-full font-bold mb-2 border-l-4  pl-2;
+  }
+  .header-title{
+    @apply text-xl col-span-full font-bold mb-2 border-l-4 border-l-yellow pl-2;
+  }
+  .anime-card{
+    @apply flex flex-col gap-2 truncate mx-auto w-full rounded-sm bg-glass duration-300 hover:bg-glass-hover p-2;
+  }
+  .anime-title{
+    @apply flex items-start overflow-hidden hover:text-yellow duration-300 justify-between text-sm text-balance font-medium;
+  }
+  .anime-card-text{
+    @apply flex items-start overflow-hidden hover:text-yellow duration-300 justify-between text-sm;
+  }
+  .image-overlay::after{
+    content: '';
+    @apply bg-black bg-opacity-65 fixed top-0 left-0 w-full h-full;
+  }
+  .bg-glass-hover{
+    background: rgba(72, 73, 103, 0.35);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7.2px);
+    -webkit-backdrop-filter: blur(7.2px);
+  }
+  .bg-glass{
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7.2px);
+    -webkit-backdrop-filter: blur(7.2px);
+  }
+
+  ::-webkit-scrollbar {
+    /* Customize the scrollbar width */
+    @apply w-2
+  }
+
+  ::-webkit-scrollbar-track {
+    /* Customize the scrollbar track */
+    @apply bg-dark
+  }
+
+  ::-webkit-scrollbar-thumb {
+    /* Customize the scrollbar thumb */
+    @apply bg-white bg-opacity-50
+  }
+  
+  :root {
+
+    --background: 224 71.4% 4.1%;
+
+    --foreground: 210 20% 98%;
+
+    --card: 224 71.4% 4.1%;
+
+    --card-foreground: 210 20% 98%;
+
+    --popover: 224 71.4% 4.1%;
+
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 210 20% 98%;
+
+    --primary-foreground: 220.9 39.3% 11%;
+
+    --secondary: 215 27.9% 16.9%;
+
+    --secondary-foreground: 210 20% 98%;
+
+    --muted: 215 27.9% 16.9%;
+
+    --muted-foreground: 217.9 10.6% 64.9%;
+
+    --accent: 215 27.9% 16.9%;
+
+    --accent-foreground: 210 20% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 215 27.9% 16.9%;
+
+    --input: 215 27.9% 16.9%;
+
+    --ring: 216 12.2% 83.9%;
+
+    --chart-1: 220 70% 50%;
+
+    --chart-2: 160 60% 45%;
+
+    --chart-3: 30 80% 55%;
+
+    --chart-4: 280 65% 60%;
+
+    --chart-5: 340 75% 55%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+ /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+}
+}
