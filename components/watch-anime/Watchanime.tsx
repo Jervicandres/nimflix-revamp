@@ -21,15 +21,9 @@ import { ANIME, IAnimeEpisode, IVideo, META, } from '@consumet/extensions'
 
 const Watchanime = ({episodeSource}: {episodeSource: string}) => {
    const [loading, setLoading] = useState(true)
-   const gogoanime = new ANIME.Gogoanime('anitaku.pe',{
-      url: 'http://localhost:8080/'
-   });
+   const gogoanime = new ANIME.Gogoanime('anitaku.bz');
    useEffect(() => {
-      episodeSource && setLoading(false)
-      const getEpisodeSource = async () => {
-         await gogoanime.fetchEpisodeSources('atri-my-dear-moments-episode-12').then(data => console.log(data)).catch(error => console.log(error))
-      }
-      getEpisodeSource()
+      episodeSource && setLoading(false);
    }, [episodeSource])
 
    if(loading)
@@ -38,7 +32,7 @@ const Watchanime = ({episodeSource}: {episodeSource: string}) => {
    return(<section className='w-full mt-5'>
       <div className='relative' >
       {episodeSource && 
-      <MediaPlayer title="Sprite Fight" src={episodeSource}>
+      <MediaPlayer title="Sprite Fight" src={"https://gogoanime-and-hianime-proxy.vercel.app/hls-proxy?url="+episodeSource}>
          <MediaProvider />
          <PlyrLayout icons={plyrLayoutIcons} />
       </MediaPlayer>}

@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 
 const Animelist = ({animeList, headerText}: {animeList: IAnimeResult[], headerText?: string}) => {
-
+  console.log(animeList)
   if(headerText === 'Popular Anime' || headerText === 'Anime You May Like')
     return (<section className='w-[90%] max-w-[1440px] mx-auto my-5'>
         <div className='anime-results-grid'>
@@ -18,7 +18,7 @@ const Animelist = ({animeList, headerText}: {animeList: IAnimeResult[], headerTe
         </div>
       </section>)
 
-  else if(headerText === 'Recent Episodes')
+  else if(headerText === 'New Episodes')
     return (<section className='w-[90%] max-w-[1440px] mx-auto my-5'>
               <div className='anime-results-grid'>
                 <h2 className='text-xl col-span-full font-bold mb-2 border-l-4 border-l-yellow pl-2'>{headerText}</h2>

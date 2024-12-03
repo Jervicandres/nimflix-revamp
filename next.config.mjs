@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+   reactStrictMode: false,
    images: {
       remotePatterns: [
          {
@@ -30,6 +31,11 @@ const nextConfig = {
          {
             protocol: 'https',
             hostname: 'i.animepahe.ru',
+            port: ''
+         },
+         {
+            protocol: 'https',
+            hostname: 'kitsu-production-media.s3.us-west-002.backblazeb2.com',
             port: ''
          }
       ]

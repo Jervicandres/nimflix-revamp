@@ -1,3 +1,5 @@
+import { ITitle } from "@consumet/extensions"
+
 export interface IAnimeResults {
   currentPage: number,
   hasNextPage: boolean,
@@ -51,4 +53,14 @@ export interface RelationsProps {
   episodes: number
 }
 
+export interface ICurrentAnime {
+  id?: string, 
+  episodeId?: string, 
+  episodeNumber?: string, 
+  title?: ITitle,
+  thumbnail?: string
+}
 
+export interface IRecentWatch extends ICurrentAnime {
+
+}

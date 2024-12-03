@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faStar } from '@fortawesome/free-solid-svg-icons';
 
 const Trending = ({trendingAnime}: {trendingAnime: IAnimeResult[]}) => {
+  
   return (
     <section className='section-width h-64 lg:h-96 rounded-sm overflow-hidden'>
     <Swiper

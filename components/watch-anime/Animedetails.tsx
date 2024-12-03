@@ -1,7 +1,7 @@
 'use client'
 
 import Animegenre from "@components/Animegenre";
-import { EpisodeProps, IAnimeInfo } from "@components/props/AnimeProps";
+import { EpisodeProps, IAnimeInfo, ICurrentAnime, IRecentWatch } from "@components/props/AnimeProps";
 import { Skeleton } from "@components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,6 +31,31 @@ const Animedetails = ({id,animeInfo,episodeList, currentEpisode}: PropsType) => 
    
    const paginationList = new Array(maxPage).fill(null);
 
+   useEffect(() => {
+      const recentWatchList: IRecentWatch[] = JSON.parse(localStorage.getItem("RECENT_WATCH") || "[]");
+      
+         const currentAnime: ICurrentAnime = { 
+            id: id, 
+            episodeId: currentEpisode.id, 
+            episodeNumber: currentEpisode.number.toString(), 
+            title: animeInfo.title as ITitle, 
+            thumbnail: animeInfo.image || animeInfo.cover
+         };
+
+         if (recentWatchList.length < 6 && recentWatchList.length > 0 && !recentWatchList.includes(currentAnime)) {
+            recentWatchList.unshift(currentAnime);
+            localStorage.setItem("RECENT_WATCH",JSON.stringify(recentWatchList));
+         }
+         else if (recentWatchList.length < 6 && currentAnime.id) {
+            localStorage.setItem("RECENT_WATCH",JSON.stringify([currentAnime]));
+         }
+         else {
+            recentWatchList.pop();
+            recentWatchList.unshift(currentAnime);
+            localStorage.setItem("RECENT_WATCH",JSON.stringify(recentWatchList));
+         }
+      
+   }, []);
    return (
    <section className="grid grid-cols-3 gap-5 items-start">
       <div className="details-container">

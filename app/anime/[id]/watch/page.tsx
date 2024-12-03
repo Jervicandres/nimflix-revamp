@@ -1,9 +1,7 @@
 import Animedetails from '@components/watch-anime/Animedetails';
 import Watchanime from '@components/watch-anime/Watchanime';
-import { ANIME, IAnimeEpisode, IAnimeInfo, IAnimeResult, IVideo, META } from '@consumet/extensions';
-import React, { Suspense } from 'react'
-import DetailsLoading from './loading';
-import { Skeleton } from '@components/ui/skeleton';
+import { IAnimeEpisode, IVideo, META } from '@consumet/extensions';
+import { getAnimeInfo } from '@utils/GetAnimeInfo';
 
 interface IParams {
    params: {id: string}
@@ -49,9 +47,10 @@ const WatchAnimePage = async ({
       searchParams: {[key: string]: string | string[] | undefined}}) => {
    const id: string = params?.id;
    const episodeSource = await getEpisodeSource(searchParams.ep);
-   const animeInfo = await anilist.fetchAnilistInfoById(params?.id);
-   const episodeList = await anilist.fetchEpisodesListById(params?.id,false,true);
+   const animeInfo = await getAnimeInfo(id);
+   const episodeList =  animeInfo.episodes;
    const currentEpisode = episodeList?.filter((episode: IAnimeEpisode) => episode.id === searchParams.ep)[0];
+   
    return (
       <section className='w-full lg:w-3/4 lg:mx-auto' suppressHydrationWarning>
             <Watchanime episodeSource={episodeSource}/>

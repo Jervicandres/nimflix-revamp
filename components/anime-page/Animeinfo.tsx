@@ -19,17 +19,18 @@ export const FormatStartDate = ({year,month,day}: FuzzyDate) => {
 
 const Animeinfo = ({anime,episodes}: {
   anime: IAnimeResult,
-  episodes: IAnimeEpisode[]
+  episodes: IAnimeEpisode[] | undefined
 }) => {
   const [readmore, setReadmore] = useState(false);
   const [showReadmore, setShowReadmore] = useState(false);
   const [selected, setSelected] = useState("Episodes")
   
-
+  useEffect(() => {
+    console.log(anime, episodes);
+  },[])
   const handleClick = (e:  React.MouseEvent<HTMLButtonElement>) => {
     setSelected((e.target as HTMLElement).innerText);
   }
-
 
   if(anime){
   return (
@@ -49,7 +50,7 @@ const Animeinfo = ({anime,episodes}: {
           </div>
           <div className='flex flex-col gap-2 lg:w-4/5'>
               <h1 className='text-xl lg:text-2xl flex items-center gap-2 font-medium'>
-                {(anime.title as ITitle).english ?? (anime.title as ITitle).userPreferred } <span className='text-yellow text-sm'><FontAwesomeIcon icon={faStar} /> {(anime.rating ? anime.rating / 10 : 0).toFixed(1)}</span> <span className='text-xs opacity-60'>({anime.status})</span>
+                {(anime.title as ITitle)?.english ?? (anime.title as ITitle)?.userPreferred } <span className='text-yellow text-sm'><FontAwesomeIcon icon={faStar} /> {(anime.rating ? anime.rating / 10 : 0).toFixed(1)}</span> <span className='text-xs opacity-60'>({anime.status})</span>
               </h1>
               <Animegenre genres={anime.genres ?? []} color={anime.color ?? ''} />
               <div className='flex flex-col items-start gap-2'>
@@ -66,7 +67,7 @@ const Animeinfo = ({anime,episodes}: {
         
         <div className='flex flex-row flex-wrap lg:flex-nowrap items-start gap-5 w-[90vw] lg:w-[75vw] mx-auto mt-5'>
           <div className={`flex flex-col gap-1 w-full lg:w-[250px] rounded-lg text-xs lg:text-sm p-5 ${!anime.color ? 'bg-sage' : ''}`} style={{backgroundColor: `${anime.color}80`}}>
-            {Object.keys(anime.title).map((language: string, index: number) => {
+            {anime.title && Object.keys(anime.title).map((language: string, index: number) => {
               if((anime.title as any)[language])
               return <p key={index}><span className='font-bold capitalize'>{language}</span>: {(anime.title as any)[language]}</p>
             })}

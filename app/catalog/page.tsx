@@ -1,8 +1,9 @@
+import Animecatalog from '@components/anime-catalog/Animecatalog'
 import React from 'react'
 
 const CatalogPage = () => {
   return (
-    <div>CatalogPage</div>
+    <Animecatalog />
   )
 }
 
