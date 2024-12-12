@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NimFlix
 
-## Getting Started
+NimFlix is an anime streaming site designed to provide anime enthusiasts with a user-friendly platform to explore and watch their favorite shows. The site features a clean interface, robust search capabilities, and a catalog with detailed information about each anime.
 
-First, run the development server:
+## Upcomming Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Extensive Anime Catalog**: Browse a wide range of anime titles with detailed descriptions, ratings, and release dates.
+- **Search and Filter**: Search for anime by title, genre, or release year, and apply filters for a personalized experience.
+- **User Authentication**: Create an account to save your favorite anime, track your progress, and receive recommendations.
+- **Dynamic UI**: Responsive and interactive design, optimized for both desktop and mobile platforms.
+- **High-Quality Streaming**: Enjoy seamless video playback with adaptive streaming.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend**: Next.js and TypeScript for a dynamic and type-safe user interface.
+- **Backend**: Consumet API (a third-party API written in Node.js) for anime data and streaming sources.
+- **Database**: MongoDB for storing user data and anime information.
+- **Streaming**: Integration with a video delivery service to ensure smooth playback.
+- **Hosting**: Deployed on a cloud platform like AWS or Azure for scalability.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Installation
 
-## Learn More
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Jervicandres/nimflix-revamp.git
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Navigate to the project directory:
+   ```bash
+   cd nimflix-revamp
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+4. Set up environment variables:
+   - Create a `.env` file in the root directory.
+   - Add the necessary variables (e.g., database URI, API keys, etc.).
 
-## Deploy on Vercel
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+6. Open your browser and visit `http://localhost:3000` to access NimFlix.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Future Improvements
+
+- **Recommendations System**: Leverage machine learning to suggest anime based on user preferences.
+- **Community Features**: Add user reviews, ratings, and forums for discussions.
+- **Offline Mode**: Allow users to download episodes for offline viewing.
+- **Multilingual Support**: Support subtitles and interface translations in multiple languages.
+
+## Contributions
+
+Contributions are welcome! If you’d like to contribute, please fork the repository and create a pull request with your changes. Ensure your code adheres to the project’s coding standards.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Contact
+
+For any questions or feedback, feel free to reach out:
+
+- Email: jervic.47@gmail.com
+- GitHub: [Jervicandres](https://github.com/Jervicandres)
+
+---
+
+Enjoy exploring the world of anime with NimFlix!
+
