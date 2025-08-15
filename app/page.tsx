@@ -1,50 +1,39 @@
 import Animelist from '@components/Animelist'
 import Trending from '@components/Trending';
-import { ANIME, IAnimeResult, META } from '@consumet/extensions';
 import { Suspense } from 'react';
 import Loading from './loading';
-import { IRecentWatch } from '@components/props/AnimeProps';
-import Animecard from '@components/Animecard';
 import Recentwatchlist from '@components/Recentwatchlist';
 
-const anilist = new META.Anilist(); 
-const gogoanime = new ANIME.Gogoanime();
+const anilist = process.env.API_URL || "http://localhost:4000/api/v2/hianime"; 
 
-const getPopularAnime = async () => {
-  const data = await anilist.fetchPopularAnime(1,12);
-  return data.results;
-}
-
-const getTrendingAnime = async () => {
-  const data = await anilist.fetchTrendingAnime(1,10);
-  return data.results;
-}
-
-const getRecentEpisodes = async () => {
-  const data = await anilist.fetchRecentEpisodes(undefined,1,12);
-  return data.results;
-}
-
-const getRandomAnimes = async () => {
-  let data: IAnimeResult[] = [];
-  for(let i = 0; i < 6; i++){
-    const anime = await anilist.fetchRandomAnime();
-    data.push(anime);
-  }
+const getHomepageData = async () => {
+  const data = await fetch(anilist+"/home").then(res => res.json()).then(({data}: any) => data);
   return data;
 }
 
+const getPopularAnime = async () => {
+  const data = await fetch(anilist+"/category/recently-updated?page=1").then(res => res.json()).then(({data}: any) => data);
+  
+  return data;
+}
+
+const getSpotlightAnime = async () => {
+  const animes = await fetch(anilist+"/home").then(res => res.json()).then(({data}: any) => data.spotlightAnimes);
+  return animes;
+}
+
+
 const Homepage = async () => {
-  const popularAnime = await getPopularAnime();
-  const trendingAnime = await getTrendingAnime();
-  const recentEpisodes = await getRecentEpisodes();
+  const popularAnime = await getHomepageData().then(data => data.topAiringAnimes);
+  const trendingAnime = await getHomepageData().then(data => data.spotlightAnimes);
+  const recentEpisodes = await getHomepageData().then(data => data.latestEpisodeAnimes);
   
   return (
   <Suspense fallback={<Loading />}>
     <Trending trendingAnime={trendingAnime} />
     <Recentwatchlist />
     <Animelist animeList={recentEpisodes} headerText={'New Episodes'}/>
-    <Animelist animeList={popularAnime} headerText={'Popular Anime'}/>
+    <Animelist animeList={popularAnime.slice(0,12)} headerText={'Top Airing'}/>
   </Suspense>)
 }
 

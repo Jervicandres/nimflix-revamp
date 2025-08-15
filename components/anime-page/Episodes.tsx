@@ -14,10 +14,11 @@ import { IAnimeEpisode } from '@consumet/extensions'
 
 interface EpisodesProps {
    id: string,
+   poster: string | undefined,
    episodes: IAnimeEpisode[] | undefined,
 }
 
-const Episodes = ({id, episodes}: EpisodesProps) => {
+const Episodes = ({id,poster, episodes}: EpisodesProps) => {
    const [currentPage, setCurrentPage] = useState(1)
    const perPage = 40;
    const lastIndex = currentPage * perPage;
@@ -52,10 +53,10 @@ const Episodes = ({id, episodes}: EpisodesProps) => {
       </div>
       {episodeList?.map(episode => {
          return (
-            <Link href={`/anime/${id}/watch?ep=${episode.id}`} key={episode.id}>
+            <Link href={`/anime/${id}/watch?ep=${episode.episodeId}`} key={String(episode.episodeId)}>
                <div className="w-full pt-[56.25%] mx-auto relative">
                <Image 
-               src={episode.image ?? ''} 
+               src={poster ?? ''} 
                alt={episode.title ?? ''}
                fill
                sizes='100%'

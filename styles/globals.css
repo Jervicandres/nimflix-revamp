@@ -33,7 +33,8 @@
     @apply text-xl col-span-full font-bold mb-2 border-l-4 border-l-yellow pl-2;
   }
   .anime-card{
-    @apply flex flex-col gap-2 truncate mx-auto w-full rounded-sm bg-glass duration-300 hover:bg-glass-hover p-2;
+    @apply flex flex-col gap-2 mx-auto w-full rounded-sm bg-glass duration-300 hover:bg-glass-hover p-2;
+    
   }
   .anime-title{
     @apply flex items-start overflow-hidden hover:text-yellow duration-300 justify-between text-sm text-balance font-medium;

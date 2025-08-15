@@ -25,6 +25,11 @@ const nextConfig = {
          },
          {
             protocol: 'https',
+            hostname: 'cdn.noitatnemucod.net',
+            port: ''
+         },
+         {
+            protocol: 'https',
             hostname: 'artworks.thetvdb.com',
             port: ''
          },
@@ -36,6 +41,11 @@ const nextConfig = {
          {
             protocol: 'https',
             hostname: 'kitsu-production-media.s3.us-west-002.backblazeb2.com',
+            port: ''
+         },
+         {
+            protocol: 'https',
+            hostname: 'cdn.dotstream.buzz',
             port: ''
          }
       ]

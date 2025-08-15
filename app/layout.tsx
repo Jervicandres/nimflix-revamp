@@ -3,6 +3,9 @@ import '@styles/globals.css'
 import Navbar from '@components/Navbar';
 import { Metadata } from 'next';
 import Footer from '@components/Footer';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { config } from '@fortawesome/fontawesome-svg-core';
+config.autoAddCss = false;
 
 interface IChildren {
   children: ReactNode;

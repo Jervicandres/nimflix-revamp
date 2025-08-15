@@ -1,6 +1,7 @@
 import Animedetails from '@components/watch-anime/Animedetails';
 import Watchanime from '@components/watch-anime/Watchanime';
 import { IAnimeEpisode, IVideo, META } from '@consumet/extensions';
+import { getAnimeEpisodes } from '@utils/GetAnimeEpisodes';
 import { getAnimeInfo } from '@utils/GetAnimeInfo';
 
 interface IParams {
@@ -9,36 +10,22 @@ interface IParams {
 
 const anilist = new META.Anilist();
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export const generateMetadata = async ({params}: IParams) => {
-   const id = params?.id;
    try {
-      const animeTitle = await anilist.fetchAnilistInfoById(id).then((data:any) => data?.title.english || data.title.romaji || data.title.userPreferred)
+      const animeTitle = await fetch(`${API_URL}/anime/${params.id}`).then(res => res.json()).then(({data}: any) => data.anime.info.name);
          
-      return {title: 'Now Watching: ' + animeTitle}
+      return {title: animeTitle}
    } catch (error) {
       return {title: error}
    }
 }
 
-const getEpisodeSource = async (episodeId: string | string[] | undefined) => {
-   try {
-      let url = process.env.PROVIDER === 'zoro' ? 
-      process.env.API_URL + `/anime/zoro/watch/${episodeId}&server=vidcloud` 
-      : process.env.API_URL + `/meta/anilist/watch/${episodeId}`
-      /* const response = await fetch(url,{
-         headers: {
-            'Access-Control-Allow-Headers': '*'
-         }
-      }); */
-      const response = await fetch(url);
-      const data = await response.json();
-      
-      return data.sources.filter((source: IVideo) => source.quality === 'default')[0].url
-   } catch (error) {
-      return error
-   }
+const getEpisodeSource = async (episodeId: any) => {
+   const episodeSource = await fetch(`${API_URL}/episode/sources?animeEpisodeId=${episodeId}&server=hd-2&category=dub`).then(res => res.json()).then(({data}: any) => data);
+   return episodeSource;
 }
-
 
 const WatchAnimePage = async ({
    params, 
@@ -48,14 +35,14 @@ const WatchAnimePage = async ({
    const id: string = params?.id;
    const episodeSource = await getEpisodeSource(searchParams.ep);
    const animeInfo = await getAnimeInfo(id);
-   const episodeList =  animeInfo.episodes;
-   const currentEpisode = episodeList?.filter((episode: IAnimeEpisode) => episode.id === searchParams.ep)[0];
+   const episodeList =  await getAnimeEpisodes(id);
+   const currentEpisode = episodeList?.filter((episode: any) => episode.episodeId === searchParams.ep)[0];
    
    return (
       <section className='w-full lg:w-3/4 lg:mx-auto' suppressHydrationWarning>
             <Watchanime episodeSource={episodeSource}/>
             <section className='anime-section mt-5'>
-               <Animedetails id={id} animeInfo={animeInfo} episodeList={episodeList} currentEpisode={currentEpisode}/>
+               {<Animedetails id={id} animeInfo={animeInfo} episodeList={episodeList} currentEpisode={currentEpisode}/>}
             </section>
       </section>
       )

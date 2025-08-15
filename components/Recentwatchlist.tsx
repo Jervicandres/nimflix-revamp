@@ -10,9 +10,9 @@ import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Recentwatchlist = () => {
-    const [recentWatch, setRecentWatch] = useState<IRecentWatch[]>([]);
+    const [recentWatch, setRecentWatch] = useState<any[]>([]);
     useEffect(() => {
-        const recentWatch: IRecentWatch[] = JSON.parse(window.localStorage.getItem("RECENT_WATCH") || "[]");
+        const recentWatch: any[] = JSON.parse(window.localStorage.getItem("RECENT_WATCH") || "[]");
         if (recentWatch) {
             setRecentWatch(recentWatch);
         }
@@ -24,7 +24,7 @@ const Recentwatchlist = () => {
             <div className='anime-results-grid'>
             <h2 className='text-xl col-span-full font-bold mb-2 border-l-4 border-l-yellow pl-2'>Recently Watched</h2>
             {recentWatch?.map((anime) => {
-                return <Link href={`/anime/${anime.id}`} key={anime.id} className="anime-card">
+                return <Link href={`/anime/${anime.id}/watch?ep=${anime.episodeId}`} key={anime.id} className="anime-card">
                 <div className="relative">
                 <div className="anime-overview">
         
@@ -32,7 +32,7 @@ const Recentwatchlist = () => {
                 <div className="w-full pt-[140%] relative">
                     <Image 
                         src={anime.thumbnail ?? ''} 
-                        alt={(anime?.title as ITitle).english ?? ''}
+                        alt={anime.name ?? ''}
                         fill
                         priority
                         sizes="100%"
@@ -44,7 +44,7 @@ const Recentwatchlist = () => {
                 <span 
                 className="truncate overflow-x-scroll no-scrollbar" 
                 >
-                    {(anime?.title as ITitle).english || (anime?.title as ITitle).userPreferred || (anime?.title as ITitle).romaji} 
+                    {anime.title} 
                 </span>
                 </div>
                 <span 

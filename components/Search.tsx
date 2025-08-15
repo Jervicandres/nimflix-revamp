@@ -12,7 +12,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { META } from '@consumet/extensions';
 
 const Search = () => {
-  const anilist = new META.Anilist();
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
   const searchParams = useSearchParams();
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState<any>();
@@ -22,8 +22,8 @@ const Search = () => {
   const router = useRouter();
 
   const searchAnime = async (query: string) => {
-    const data = await anilist.search(query);
-    setSearchResult(data.results);
+    const data = await fetch(`${API_URL}/search?q=${query}`).then(res => res.json()).then(({data}) => data?.animes);
+    setSearchResult(data);
   }
 
   const handleKeyPress = (e:React.KeyboardEvent<HTMLInputElement>) => {
@@ -79,13 +79,12 @@ const Search = () => {
         {searchResult.slice(0,5).map((result:any) => {
             return <Link href={`/anime/${result.id}`} key={result.id} className='flex items-start gap-2 bg-zinc-950 h-24 w-full hover:bg-zinc-800 p-1'>
               <div className="relative min-w-16 h-full">
-                <Image alt={result.title.userPreferred} src={result.image} fill sizes='100%' className='object-cover' />
+                <Image alt={result.title?.userPreferred} src={result.poster} fill sizes='100%' className='object-cover' />
               </div>
               <div className='flex flex-col py-1 text-sm'>
-                <p className='font-semibold text-wrap truncate line-clamp-1'>{result.title?.english ?? result.title?.userPreferred} </p>
-                <p className='text-xs opacity-70'>{result.status}</p>
-                <p className='text-xs'>{[result.type,result?.releaseDate].join(' - ')} - <span className='text-yellow font-semibold'><FontAwesomeIcon icon={faStar} className='mr-1'/>{(result.rating / 10).toFixed(1)}</span></p>
-                <p className='text-xs opacity-70'>{result.genres.join(', ')}</p>
+                <p className='font-semibold text-wrap truncate line-clamp-1'>{result.name} </p>
+                <p className='text-xs opacity-70'>{result.jname}</p>
+                <p className='text-xs'>{[result.type,result?.duration]?.join(' - ')}</p>
               </div>
             </Link>
         })} <Link href={`/search?query=${searchText}`} className='bg-zinc-950 border-t-2 w-full text-center hover:bg-zinc-800 p-1'>View all results.</Link>

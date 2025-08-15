@@ -12,6 +12,7 @@ interface PropsType {
 
 
 const SearchResult = ({query}: PropsType) => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
   const anilist = new META.Anilist();
   const [searchResults, setSearchResults] = useState<IAnimeResult[]>()
   const [hasNextPage, setHasNextPage] = useState<boolean>();
@@ -24,8 +25,9 @@ const SearchResult = ({query}: PropsType) => {
   useEffect(() => {
     const loadInitialResults = async () => {
       try{
-        const data = await anilist.search(query as string,1,12);
-        setSearchResults(data.results);
+        const data = await fetch(`${API_URL}/search?q=${query}&page=${page}`).then(res => res.json()).then(({data}) => data);
+        console.log("Search data: ", data);
+        setSearchResults(data.animes);
         setPage(1);
         setHasNextPage(data.hasNextPage || false);
       }
@@ -44,12 +46,13 @@ const SearchResult = ({query}: PropsType) => {
     const loadNextResults = async () => {
       try{
         let pageNumber: number = page + 1;
-        const data = await anilist.search(query as string,pageNumber,12);
+        const data = await fetch(`${API_URL}/search?q=${query}&page=${page}`).then(res => res.json()).then(({data}) => data);
+        /* const data = await anilist.search(query as string,pageNumber,12); */
         setPage(pageNumber);
         setHasNextPage(data.hasNextPage);
         setSearchResults(prevResults => {
           if(prevResults)
-          return [...prevResults,...data.results]
+          return [...prevResults,...data.animes]
         })
       }
       catch(error){

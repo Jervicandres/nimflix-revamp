@@ -17,10 +17,8 @@ export const FormatStartDate = ({year,month,day}: FuzzyDate) => {
   return <>{formatter.format(premierDate)}</>;
 }
 
-const Animeinfo = ({anime,episodes}: {
-  anime: IAnimeResult,
-  episodes: IAnimeEpisode[] | undefined
-}) => {
+const Animeinfo = ({animeInfo,episodes}: any) => {
+  const {anime, relatedAnimes, recommendedAnimes} = animeInfo;
   const [readmore, setReadmore] = useState(false);
   const [showReadmore, setShowReadmore] = useState(false);
   const [selected, setSelected] = useState("Episodes")
@@ -35,13 +33,13 @@ const Animeinfo = ({anime,episodes}: {
   if(anime){
   return (
     <section className='w-full min-h-dvh relative'>
-        <div className='anime-banner' style={{backgroundImage: `url('${anime.cover}')`, backgroundPosition: '50% 45%'}}>
+        <div className='anime-banner' style={{backgroundImage: `url('${anime.info.poster}')`, backgroundPosition: '50% 45%'}}>
         </div>
         <div className="flex flex-col items-start lg:flex-row w-[90vw] lg:w-3/4 mx-auto my-5 gap-5">
           <div className="anime-poster" style={{boxShadow: `0px 0px 20px -5px ${anime.color}b3` }}>
               {
               <Image 
-              src={anime.image ?? 'https://placehold.co/200x300?text=Loading...'} 
+              src={anime.info.poster ?? 'https://placehold.co/200x300?text=Loading...'} 
               alt={anime.id ?? ''} 
               fill 
               sizes='100%' 
@@ -50,12 +48,13 @@ const Animeinfo = ({anime,episodes}: {
           </div>
           <div className='flex flex-col gap-2 lg:w-4/5'>
               <h1 className='text-xl lg:text-2xl flex items-center gap-2 font-medium'>
-                {(anime.title as ITitle)?.english ?? (anime.title as ITitle)?.userPreferred } <span className='text-yellow text-sm'><FontAwesomeIcon icon={faStar} /> {(anime.rating ? anime.rating / 10 : 0).toFixed(1)}</span> <span className='text-xs opacity-60'>({anime.status})</span>
+                {anime.info.name ?? "Name not found" }  <span className='text-xs opacity-60'>({anime.moreInfo.status})</span>
+                {/* <span className='text-yellow text-sm'><FontAwesomeIcon icon={faStar} /> {(anime.rating ? anime.rating / 10 : 0).toFixed(1)}</span> */}
               </h1>
-              <Animegenre genres={anime.genres ?? []} color={anime.color ?? ''} />
+              <Animegenre genres={anime.moreInfo.genres ?? []} color={anime.color ?? '#f4ce14'} />
               <div className='flex flex-col items-start gap-2'>
                 <p className={`text-xs truncate text-wrap  ${readmore ?  '' : 'line-clamp-3' }`} ref={el => { el?.scrollHeight != el?.clientHeight && setShowReadmore(true)}}>
-                  {Cleantext(anime.description)}
+                  {Cleantext(anime.info.description)}
                 </p>
                 {showReadmore && 
                 <button onClick={() => setReadmore(prevState => !prevState)} className={`text-xs duration-200 bg-light text-dark hover:bg-dark hover:text-white border hover:border py-1 px-2 rounded-sm`}>
@@ -67,19 +66,25 @@ const Animeinfo = ({anime,episodes}: {
         
         <div className='flex flex-row flex-wrap lg:flex-nowrap items-start gap-5 w-[90vw] lg:w-[75vw] mx-auto mt-5'>
           <div className={`flex flex-col gap-1 w-full lg:w-[250px] rounded-lg text-xs lg:text-sm p-5 ${!anime.color ? 'bg-sage' : ''}`} style={{backgroundColor: `${anime.color}80`}}>
-            {anime.title && Object.keys(anime.title).map((language: string, index: number) => {
+            {/* {anime.title && Object.keys(anime.title).map((language: string, index: number) => {
               if((anime.title as any)[language])
               return <p key={index}><span className='font-bold capitalize'>{language}</span>: {(anime.title as any)[language]}</p>
-            })}
-            {anime.synonyms && 
+            })} */}
+            {/* {anime.synonyms && 
             <div className='whitespace-pre text-wrap'>
               <span className='font-bold capitalize'>Synonyms:</span>
               {anime.synonyms.map((synonym: string) => synonym).join(",\r\n")}
-            </div>}
-            <p><span className='font-bold'>Episodes: 
-            </span> {anime.totalEpisodes}</p>
-            <p><span className='font-bold'>Premiered: </span>{anime.startDate != null && <FormatStartDate year={anime.startDate?.year} month={anime.startDate?.month} day={anime.startDate?.day}/>}</p>
-            {anime.endDate?.day && <p><span className='font-bold'>Ended: </span><FormatStartDate year={anime.endDate?.year} month={anime.endDate?.month} day={anime.endDate?.day} /></p>}
+            </div>} */}
+            <p><span className='font-bold'>Japanese Title: {anime.moreInfo.japanese}</span></p>
+            <p><span className='font-bold'>Type: </span>{anime.info.stats.type}</p>
+            <p><span className='font-bold'>Episodes: </span>{anime.info.stats.episodes?.sub}</p>
+            <p><span className='font-bold'>Duration: </span>{anime.moreInfo.duration}</p>
+            <p><span className='font-bold'>Studios: </span>{anime.moreInfo.studios}</p>
+            {/* <p><span className='font-bold'>Premiered: </span>{anime.startDate != null && <FormatStartDate year={anime.startDate?.year} month={anime.startDate?.month} day={anime.startDate?.day}/>}</p> */}
+            {/* {anime.endDate?.day && <p><span className='font-bold'>Ended: </span><FormatStartDate year={anime.endDate?.year} month={anime.endDate?.month} day={anime.endDate?.day} /></p>} */}
+            <p><span className='font-bold'>Premiered: </span>{anime.moreInfo.premiered != null && anime.moreInfo.premiered}</p>
+            <p><span className='font-bold'>Aired: </span>{anime.moreInfo.aired != null && anime.moreInfo.aired}</p>
+            <p><span className='font-bold'>Producers: </span>{anime.moreInfo.producers?.length > 0 ? anime.moreInfo.producers.join(', ') : 'None'}</p>
           </div>
 
           <div className='flex flex-col items-start w-full lg:w-[1150px] gap-3'>
@@ -88,8 +93,8 @@ const Animeinfo = ({anime,episodes}: {
               <button onClick={(e) => handleClick(e)} className={`${selected === "Relations" ? 'active' : 'border-b-transparent'} tabs`}>Relations</button>
               <button onClick={(e) => handleClick(e)} className={`${selected === "Recommendations" ? 'active' : 'border-b-transparent'} tabs`}>Recommendations</button>
           </div>
-          {(selected === "Episodes") ? <Episodes id={anime.id} episodes={episodes}/> :
-          (selected === "Relations") ? <Relations relations={anime.relations} /> : <Recommendations recommendations={anime.recommendations}/>}
+          {(selected === "Episodes") ? <Episodes id={anime.info.id} poster={anime.info.poster} episodes={episodes}/> :
+          (selected === "Relations") ? <Relations relations={relatedAnimes} /> : <Recommendations recommendations={recommendedAnimes}/>}
           </div>
         </div>
     </section>

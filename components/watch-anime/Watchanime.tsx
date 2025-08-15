@@ -19,9 +19,8 @@ import { ANIME, IAnimeEpisode, IVideo, META, } from '@consumet/extensions'
          sources.filter((source: IAnimeEpisode) => source.quality == 'default')[0].url
          */
 
-const Watchanime = ({episodeSource}: {episodeSource: string}) => {
+const Watchanime = ({episodeSource}: {episodeSource: any}) => {
    const [loading, setLoading] = useState(true)
-   const gogoanime = new ANIME.Gogoanime('anitaku.bz');
    useEffect(() => {
       episodeSource && setLoading(false);
    }, [episodeSource])
@@ -32,7 +31,12 @@ const Watchanime = ({episodeSource}: {episodeSource: string}) => {
    return(<section className='w-full mt-5'>
       <div className='relative' >
       {episodeSource && 
-      <MediaPlayer title="Sprite Fight" src={"https://gogoanime-and-hianime-proxy.vercel.app/hls-proxy?url="+episodeSource}>
+      <MediaPlayer 
+         title="Sprite Fight" 
+         /* src={`http://localhost:3000/api/proxy?ref=${encodeURIComponent(episodeSource.headers.Referer)}&url=${encodeURIComponent(episodeSource.sources[0].url)}`} */
+         /* src={episodeSource.sources[0].url} */
+         src={`https://www.youtube.com/embed/N4R9C3UukIE?si=tvrhjQepzKiL2qCl`}
+         >
          <MediaProvider />
          <PlyrLayout icons={plyrLayoutIcons} />
       </MediaPlayer>}

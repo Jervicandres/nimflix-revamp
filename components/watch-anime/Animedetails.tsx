@@ -16,13 +16,13 @@ interface PropsType{
    id: string;
    animeInfo: IAnimeResult;
    episodeList: IAnimeEpisode[];
-   currentEpisode: IAnimeEpisode;
+   currentEpisode: any;
 }
 
 const Animedetails = ({id,animeInfo,episodeList, currentEpisode}: PropsType) => {
    const searchParams = useSearchParams();
    const episodeId = searchParams.get("ep");
-
+   const {info, moreInfo} = animeInfo.anime;
    const [currentPage, setCurrentPage] = useState(1);
    const perPage = 40;
    const lastIndex = currentPage * perPage;
@@ -36,13 +36,12 @@ const Animedetails = ({id,animeInfo,episodeList, currentEpisode}: PropsType) => 
       
          const currentAnime: ICurrentAnime = { 
             id: id, 
-            episodeId: currentEpisode.id, 
+            episodeId: currentEpisode.episodeId, 
             episodeNumber: currentEpisode.number.toString(), 
-            title: animeInfo.title as ITitle, 
-            thumbnail: animeInfo.image || animeInfo.cover
+            title: info.name, 
+            thumbnail: info.poster || ""
          };
-
-         if (recentWatchList.length < 6 && recentWatchList.length > 0 && !recentWatchList.includes(currentAnime)) {
+         if (recentWatchList.length < 6 && recentWatchList.length > 0 && recentWatchList.some((currentAnime,index) => currentAnime.id === recentWatchList[index].id && currentAnime.episodeId === recentWatchList[index].episodeId)) {
             recentWatchList.unshift(currentAnime);
             localStorage.setItem("RECENT_WATCH",JSON.stringify(recentWatchList));
          }
@@ -60,14 +59,10 @@ const Animedetails = ({id,animeInfo,episodeList, currentEpisode}: PropsType) => 
    <section className="grid grid-cols-3 gap-5 items-start">
       <div className="details-container">
          <div className="flex flex-col gap-2">
-            <h2 className="text-xl font-semibold">{(animeInfo.title as ITitle).english} - Episode {currentEpisode.number}</h2>
+            <h2 className="text-xl font-semibold">{info?.name} - Episode {currentEpisode?.number}</h2>
             <Link href={`/anime/${id}`} className={`flex items-center gap-2 text-sm max-w-fit text-yellow opacity-70`}>
                <span>
-                  {(animeInfo.title as ITitle).romaji} 
-               </span>
-               •
-               <span>
-                  {(animeInfo.title as ITitle).native}
+                  {moreInfo?.japanese} 
                </span>
             </Link>
             <hr className="mt-2"/>
@@ -75,12 +70,12 @@ const Animedetails = ({id,animeInfo,episodeList, currentEpisode}: PropsType) => 
                <p className="text-md font-semibold">
                   Description:
                </p>
-               <p className="text-sm">
-                  {currentEpisode.description ? CleanText(currentEpisode.description) : 'No description.'}
+               <p className="text-sm whitespace-pre-line">
+                  {currentEpisode?.description ? CleanText(currentEpisode?.description) : info.description ? CleanText(info.description) : "No description available."}
                </p>
             </div>
             <div className="flex items-center gap-2">
-               <span className="text-md font-semibold">Genre: </span><Animegenre genres={animeInfo.genres} color={animeInfo.color} />
+               <span className="text-md font-semibold">Genre: </span><Animegenre genres={moreInfo.genres} color={animeInfo.color} />
             </div>
          </div>
       </div>
@@ -89,7 +84,7 @@ const Animedetails = ({id,animeInfo,episodeList, currentEpisode}: PropsType) => 
          <div className='flex justify-start gap-3 items-center'>
             <label className="text-md font-semibold">Episode List</label>
             {maxPage >= 1 &&
-               <Select defaultValue='1' onValueChange={(e) => setCurrentPage(Number(e))}>
+               <Select defaultValue={'1'} onValueChange={(e) => setCurrentPage(Number(e))}>
                   <SelectTrigger className="w-[200px] outline-none">
                      <SelectValue  />
                   </SelectTrigger>
@@ -109,18 +104,18 @@ const Animedetails = ({id,animeInfo,episodeList, currentEpisode}: PropsType) => 
          <hr/>
          <div className="episode-list">
             {episodeList?.slice(firstIndex,lastIndex).map((episode, index) => {
-               return <Link key={episode.id} href={`/anime/${id}/watch?ep=${episode.id}`} className={`episode-card ${episode.id === episodeId && 'pointer-events-none'}`}> 
+               return <a key={episode.number} href={`/anime/${id}/watch?ep=${episode.episodeId}`} className={`episode-card ${episode.episodeId === episodeId && 'pointer-events-none'}`}> 
                         <div className="relative min-w-28 h-16">
-                           <Image src={episode.image ?? ''} alt={episode.title ?? ''} fill sizes="100%" className="object-cover"/>
+                           <Image src={info.poster ?? ''} alt={episode.title ?? ''} fill sizes="100%" className="object-cover"/>
                         </div>
                         <div className="flex flex-col gap-1 items-start">
                            {episode.title ? 
                               <span className="episode-title">{episode.number}: {episode.title}</span> :
                               <span className="episode-title">Episode: {episode.number}</span>
                            }
-                           {episode.id === episodeId && <span className="text-xs p-1 rounded-sm bg-yellow text-black">Currently Watching</span>}
+                           {episode.episodeId === episodeId && <span className="text-xs p-1 rounded-sm bg-yellow text-black">Currently Watching</span>}
                         </div>
-                     </Link>
+                     </a>
             })
          }
          </div>
